@@ -4,7 +4,7 @@
   "description": "webgl afterglow",
   "scripts": {
     "afterglow": "node afterglow.js",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --open",
     "dev": "NODE_ENV=development webpack-dev-server --hot --inline --host 0.0.0.0 --colors --error-details --content-base ",
     "build": "NODE_ENV=production webpack --progress --colors --error-details && node createSketch.js",
     "test": "node test.js"
