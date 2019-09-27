@@ -1,7 +1,19 @@
+# dependencies
 node_modules
+
+# production
+build
+
+# misc
 .DS_Store
+
 .sass-cache
 build
 experiments/TextureProj/npm-debug.log
 illum
 yarn.lock
+npm-debug.log
+yarn-error.log
+yarn.lock
+.yarnclean
+.vscode
