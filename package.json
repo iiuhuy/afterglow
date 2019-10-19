@@ -13,7 +13,8 @@
     "clean": "rm dist/bundle.js",
     "build-dev": "webpack -d --mode development",
     "build-prod": "webpack -p --mode production",
-    "start": "webpack-dev-server --hot --mode development"
+    "start": "webpack-dev-server --hot --mode development",
+    "tool": "cd ../../tools/SHADERed/ && ./bin/SHADERed"
   },
   "dependencies": {
     "react": "^16.10.2",
