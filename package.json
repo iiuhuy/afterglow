@@ -17,22 +17,24 @@
     "tool": "cd ../../tools/SHADERed/ && ./bin/SHADERed"
   },
   "dependencies": {
+    "glslify-loader": "^2.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-hot-loader": "^4.12.15"
   },
   "devDependencies": {
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
-    "@babel/preset-react": "^7.6.3",
-    "babel-loader": "^8.0.6",
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
     "@hot-loader/react-dom": "^16.10.2+4.12.15",
-    "webpack-dev-server": "^3.8.2",
+    "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
+    "prettier": "^1.18.2",
+    "raw-loader": "^3.1.0",
     "style-loader": "^1.0.0",
-    "prettier": "^1.18.2"
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
   },
   "repository": {
     "type": "git",
