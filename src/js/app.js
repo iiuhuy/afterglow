@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./HelloWorld";
+import App from "./WebGL";
 import "../styles.css";
 
 var mountNode = document.getElementById("app");
