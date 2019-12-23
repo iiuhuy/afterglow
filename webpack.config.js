@@ -9,6 +9,8 @@ const isProd = env === "production";
 console.log("Environment isProd :", isProd);
 
 const plugins = [new webpack.HotModuleReplacementPlugin()];
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 if (isProd) {
   plugins.push(
@@ -29,6 +31,7 @@ if (isProd) {
 const entry = isProd
   ? { app: "./src/js/app.js" }
   : { app: "./src/js/app.js", debug: "./src/js/debug.js" };
+
 const output = isProd
   ? {
       filename: "assets/js/app.js",
@@ -45,13 +48,28 @@ const config = {
   // entry,
   devtool,
   devServer: {
-    contentBase: "./dist"
-    // host: "0.0.0.0"
+    contentBase: "./dist",
+    // host: "0.0.0.0",
+    port: "8082"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js"
   },
+  // ----- webpack-bundle-analyzer 插件 ----- //
+  // plugins: [
+  //   new BundleAnalyzerPlugin({
+  //     analyzerMode: "server",
+  //     analyzerHost: "127.0.0.1",
+  //     analyzerPort: 8888,
+  //     reportFilename: "report.html",
+  //     defaultSizes: "parsed",
+  //     openAnalyzer: true,
+  //     generateStatsFile: false,
+  //     statsFilename: "stats.json",
+  //     logLevel: "info"
+  //   }) 
+  // ],
   module: {
     rules: [
       {
@@ -83,5 +101,5 @@ const config = {
     }
   }
 };
-console.log(config);
+console.log(config, "\r\n");
 module.exports = config;

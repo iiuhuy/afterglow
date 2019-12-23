@@ -31,3 +31,7 @@ npm run build-dev
 ## Running
 
 Open the file `dist/index.html` in your browser
+
+## Tool
+
+关于 tool 的使用，借助这个工具 [SHADERed](https://github.com/dfranx/SHADERed)
