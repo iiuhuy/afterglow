@@ -3,9 +3,9 @@ import GLC from "../GL/index";
 let r = 0;
 const render = () => {
   // console.log("emm");
-  GLC.clear(1.0, 0.0, 0.0, 1.0);
   GLC.clear(r, 0.0, 0.0, 1.0);
-  r = r + 0.01;
+  // GLC.clear(r, 0.0, 0.0, 1.0);
+  r = r + 0.001;
   window.requestAnimationFrame(render);
 };
 

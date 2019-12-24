@@ -12,9 +12,13 @@ class WebGL extends React.Component {
     return (
       <canvas
         id="webgl"
-        width="800px"
-        height="800px"
-        style={{ border: "1px solid red" }}
+        width="400px"
+        height="400px"
+        style={{
+          border: "1px solid red",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
       ></canvas>
     );
   }
