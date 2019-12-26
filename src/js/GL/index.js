@@ -35,6 +35,42 @@ class GLCommander {
       new Uint16Array(indices),
       this.gl.STATIC_DRAW
     );
+
+  // shader functions
+  createVertexShader = () => {
+    this.gl.createShader(this.gl.VERTEX_SHADER);
+  };
+  createFragmentShader = () => {
+    this.gl.createShader(this.gl.FRAGMENT_SHADER);
+  };
+  addShaderSource = (shader, source) => {
+    this.gl.shaderSource(shader, source);
+  };
+  compileShader = shader => {
+    this.gl.compileShader(shader);
+  };
+  createShaderProgram = () => {
+    this.gl.createProgram();
+  };
+  attachShaderProgram = (program, shader) => {
+    this.gl.attachShader(program, shader);
+  };
+  linkProgram = program => {
+    this.gl.linkProgram(program);
+  };
+  useProgram = program => {
+    this.gl.useProgram(program);
+  };
+
+  getAttribLocation = (program, attribute) => {
+    this.gl.getAttribLocation(program, attribute);
+  };
+  enableVertexAttribArray = attribute => {
+    this.gl.enableVertexAttribArray(attribute);
+  };
+  pointToAttribute = (data, dimensions) => {
+    this.gl.vertexAttribPointer(data, dimensions, this.gl.FLOAT, false, 0, 0);
+  };
 }
 
 const GLC = new GLCommander();

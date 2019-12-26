@@ -18,6 +18,16 @@ export default class ModelShader {
     GLC.attachShaderToProgram(program, fragmentShader);
     GLC.linkProgram(program);
 
+    this.positionAttribute = GLC.getAttribLocation(program, Location, POSITION);
     this.program = program;
   }
+
+  use = () => {
+    GLC.useProgram(this.program);
+  };
+
+  enablePosition = () => {
+    GLC.enableVertexAttribArray(this.positionAttribute);
+    GLC.pointToAttribute(this.positionAttribute, 3);
+  };
 }
