@@ -15,12 +15,12 @@ export default class ModelRenderer {
     }
   };
 
-  addInsrance = (instance, id) => {
+  addInstance = (instance, id) => {
     this.models[id].instances.push(instance);
   };
 
   preRender = () => {
-    GLC.viewPort();
+    GLC.viewport();
     GLC.depthTest(true);
   };
 

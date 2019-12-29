@@ -1,7 +1,7 @@
 import GLC from "../../GL/index";
 import VertexSource from "./vertex";
 import FragmentSource from "./fragment";
-import Location from "./locations";
+import Locations from "./locations";
 
 export default class ModelShader {
   constructor() {
@@ -18,7 +18,7 @@ export default class ModelShader {
     GLC.attachShaderToProgram(program, fragmentShader);
     GLC.linkProgram(program);
 
-    this.positionAttribute = GLC.getAttribLocation(program, Location, POSITION);
+    this.positionAttribute = GLC.getAttribLocation(program, Locations.POSITION);
     this.program = program;
   }
 
