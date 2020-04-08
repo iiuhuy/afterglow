@@ -23,11 +23,11 @@ export default id => {
   const vertices = [0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0];
 
   const indices = [0, 1, 2];
-  debugger;
+  // debugger;
   const modelRender = new ModelRenderer();
-  debugger;
+  // debugger;
   modelRender.registerNewModel(new ModelType(vertices, indices), "triangle");
-  debugger;
+  // debugger;
   modelRender.addInstance("instance1", "triangle");
   GLC.clear(1.0, 1.0, 1.0, 1.0);
 

@@ -1,105 +1,143 @@
-// webpack.config.js
+/* eslint comma-dangle: 0 */
 const webpack = require("webpack");
 const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const prod = process.env.NODE_ENV === "production";
+const isDevelopment = process.env.NODE_ENV === "development";
+const ip = require("ip");
+console.log(ip.address());
 
-const pathOutput = path.resolve(__dirname, "dist");
-const pathNodeModules = path.resolve(__dirname, "node_modules");
-const env = process.env.NODE_ENV;
-const isProd = env === "production";
-console.log("Environment isProd :", isProd);
+const serverIp = ip.address();
 
-const plugins = [new webpack.HotModuleReplacementPlugin()];
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
-
-if (isProd) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: false,
-      compress: {
-        drop_debugger: true,
-        drop_console: true,
-        screw_ie8: true
-      },
-      comments: false,
-      mangle: false
-    })
-  );
-  plugins.push(new ExtractTextPlugin("assets/css/main.css"));
+function getOutput() {
+  if (prod) {
+    return path.resolve(__dirname, "assets/");
+  } else {
+    return path.resolve(__dirname, "assets/");
+  }
 }
 
-const entry = isProd
-  ? { app: "./src/js/app.js" }
-  : { app: "./src/js/app.js", debug: "./src/js/debug.js" };
-
-const output = isProd
-  ? {
-      filename: "assets/js/app.js",
-      path: pathOutput
-    }
-  : {
-      filename: "assets/js/[name].js",
-      path: pathOutput
-    };
-const devtool = isProd ? "source-map" : "inline-source-map";
-
-const config = {
-  entry: ["react-hot-loader/patch", "./src/js/app.js"],
-  // entry,
-  devtool,
-  devServer: {
-    contentBase: "./dist",
-    // host: "0.0.0.0",
-    port: "8082"
+module.exports = {
+  mode: "development",
+  entry: "./src/js/app.js",
+  stats: {
+    cached: false,
+    cachedAssets: false,
+    chunkModules: false,
+    chunks: false,
+    colors: true,
+    errorDetails: true,
+    hash: false,
+    // progress: true,
+    reasons: false,
+    timings: true,
+    version: false
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js"
+    path: getOutput(),
+    filename: "js/bundle.js",
+    publicPath: isDevelopment ? `http://${serverIp}:8080/assets/` : ""
   },
-  // ----- webpack-bundle-analyzer 插件 ----- //
-  // plugins: [
-  //   new BundleAnalyzerPlugin({
-  //     analyzerMode: "server",
-  //     analyzerHost: "127.0.0.1",
-  //     analyzerPort: 8888,
-  //     reportFilename: "report.html",
-  //     defaultSizes: "parsed",
-  //     openAnalyzer: true,
-  //     generateStatsFile: false,
-  //     statsFilename: "stats.json",
-  //     logLevel: "info"
-  //   }) 
-  // ],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()]
+  },
   module: {
     rules: [
+      // {
+      //   test: /\.js$/,
+      //   loader: "babel",
+      //   exclude: /node_modules/,
+      //   query: {
+      //     plugins: ["transform-runtime", "add-module-exports"],
+      //     presets: ["es2015", "stage-1"]
+      //   }
+      // },
+      // {
+      //   test: /\.jsx?$/,
+      //   exclude: /(node_modules|bower_components)/,
+      //   use: {
+      //     loader: "babel-loader",
+      //     options: {
+      //       presets: [["@babel/preset-env"]]
+      //     }
+      //   }
+      // },
       {
-        test: /\.(js|jsx)$/,
-        use: "babel-loader",
-        exclude: pathNodeModules
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
+        }
+      },
+      {
+        loader: "babel-loader",
+        test: "/.js$|jsx/",
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: [
+          // style-loader
+          { loader: "style-loader" },
+          // css-loader
+          {
+            loader: "css-loader",
+            options: {
+              modules: true
+            }
+          }
+          // sass-loader
+          // { loader: "sass-loader" }
+        ]
       },
+      // {
+      //   test: /\.scss$/,
+      //   loader: prod
+      //     ? ExtractTextPlugin.extract(
+      //         "style-loader",
+      //         `css-loader!autoprefixer-loader?browsers=last 3 version!sass-loader?includePaths[]=""`
+      //       )
+      //     : `style!css!autoprefixer?browsers=last 3 version!sass?includePaths[]=""`
+      // },
       {
-        test: /\.(glsl|vert|frag)$/,
-        use: ["raw-loader", "glslify-loader"],
-        exclude: pathNodeModules
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ["style-loader", "css-loader", "sass-loader"]
+      },
+      { test: /\.(glsl|frag|vert)$/, loader: "raw", exclude: /node_modules/ },
+      {
+        test: /\.(glsl|frag|vert)$/,
+        loader: "glslify",
+        exclude: /node_modules/
       }
     ]
   },
-  // resolve: {
-  //   extensions: [".js", ".jsx"],
-  //   alias: {
-  //     "react-dom": "@hot-loader/react-dom"
-  //   }
-  // }
-  resolve: {
-    alias: {
-      libs: path.resolve(__dirname, "src/js/libs"),
-      shaders: path.resolve(__dirname, "src/shaders")
-    }
-  }
+  plugins: prod
+    ? [
+        new MiniCssExtractPlugin({
+          // Options similar to the same options in webpackOptions.output
+          // both options are optional
+          filename: "[name].css",
+          chunkFilename: "[id].css"
+        }),
+        // new webpack.optimize.DedupePlugin(),
+        // new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.DefinePlugin({ "process.env.NODE_ENV": '"production"' })
+        // new webpack.optimize.UglifyJsPlugin({
+        //   compress: {
+        //     screw_ie8: true,
+        //     warnings: false
+        //   }
+        // }),
+        // new ExtractTextPlugin("css/main.css")
+      ]
+    : [
+        new webpack.DefinePlugin({ "process.env.NODE_ENV": '"development"' })
+        // new webpack.optimize.OccurenceOrderPlugin()
+      ]
 };
-console.log(config, "\r\n");
-module.exports = config;
